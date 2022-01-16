@@ -1,0 +1,6 @@
+button {
+  align-items: center;
+  justify-content: center;
+  columns: 1;
+  row-gap: 1;
+}
