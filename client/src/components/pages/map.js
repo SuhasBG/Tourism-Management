@@ -7,7 +7,9 @@ const Maps = () => {
       <div className="py-4">
         <h1>Map Page</h1>
         <div>
-          <button>Map of Mysuru</button>
+          <button onClick={() => (window.location.href = "map.html")}>
+            Map of Mysuru
+          </button>
           <button>Map of Bengaluruu</button>
           <button>Map of Mangaluru</button>
           <button>Map of Vijayapura</button>
