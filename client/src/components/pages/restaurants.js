@@ -21,8 +21,11 @@ function Restaurants() {
           <button onClick={getRestaurants}>Restaurants</button>
         </div>
         {restaurantsList.map((item, index) => (
-          <div key={item.rname + index}>
-            <h5>{item.rname}</h5>
+          <div className="restaurant">
+            <h6>Restaurant Id : {item.rid}</h6>
+            <h6>Restaurant Name : {item.rname}</h6>
+            <h6>Address : {item.address}</h6>
+            <h6>Rating : {item.rating}</h6>
           </div>
         ))}
       </div>

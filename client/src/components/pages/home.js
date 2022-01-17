@@ -4,7 +4,10 @@ const Home = () => {
   return (
     <div className="container">
       <div className="py-4">
-        <h1>Home Page</h1>
+        <h4>
+          Use the navigation bar to use the different functionalities of this
+          website.
+        </h4>
       </div>
     </div>
   );

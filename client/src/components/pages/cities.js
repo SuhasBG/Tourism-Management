@@ -20,11 +20,20 @@ function Cities() {
         <div className="container">
           <button onClick={getCities}>Cities</button>
         </div>
+        {/* <table class="center">
+          <tr>
+            <th>City Id</th>
+            <th>City Name</th>
+          </tr>
+          <tr> */}
         {citiesList.map((item, index) => (
-          <div key={item.cname + index}>
-            <h5>{item.cid + item.cname}</h5>
+          <div className="city">
+            <h6>{item.cid}</h6>
+            <h6>{item.cname}</h6>
           </div>
         ))}
+        {/* </tr>
+        </table> */}
       </div>
     </div>
   );

@@ -21,8 +21,13 @@ function Places() {
           <button onClick={getPlaces}>Places</button>
         </div>
         {placesList.map((item, index) => (
-          <div key={item.name + index}>
-            <h6>{item.place_name}</h6>
+          <div className="place">
+            <h6>Place Id : {item.pid}</h6>
+            <h6>Place Name : {item.place_name}</h6>
+            <h6>Category : {item.category}</h6>
+            <h6> Description : {item.description}</h6>
+            <h6>Address : {item.address}</h6>
+            <h6>Website : {item.website}</h6>
           </div>
         ))}
       </div>
