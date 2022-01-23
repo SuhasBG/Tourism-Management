@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mangaluru</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+      }
+
+      .tourist {
+        width: 10px;
+        height: 10px;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        background: hsl(98, 98%, 22%);
+        pointer-events: none;
+      }
+    </style>
+    <style>
+
+      #marker {
+       background-image: url('https://static.thenounproject.com/png/16968-200.png');
+       background-size: cover;
+       width: 35px;
+       height: 30px;
+       border-radius: 50%;
+       cursor: pointer;
+   }
+
+   #marker9 {
+       background-image: url('data:image/png;base64,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');
+       background-size: cover;
+       width: 35px;
+       height: 30px;
+       border-radius: 50%;
+       cursor: pointer;
+   }
+   
+.mapboxgl-popup {
+max-width: 400px;
+ font: 20px/30px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+   </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script>
+
+
+      const mgrlocation = [74.85618077199517,12.91896731309151];
+      const startingpointlocation = [74.85618077199517,12.91896731309151];
+      const lastatplace = 0;
+      let keepTrack = [];
+      const pointHopper = {};
+
+      // Add your access token
+      mapboxgl.accessToken = 'pk.eyJ1IjoibmlyYW5qYW5kaWtzaGl0aCIsImEiOiJja3h1NmV1cGQwdTY2Mm9vejg3aHJ3OWYxIn0.VBpdI2-ExteBZYntnwVz9A';
+ 
+//Places     
+      const gokarnath = [74.8318749971651,12.876263226216642];
+      const  Kateel=[74.870037,13.044011];
+      const panambur=[74.811781,12.939928];
+      const tannirbhavi=[74.814303,12.892681];
+      const manjunathtemple=[74.855451,12.885986];
+      const mangladevi=[74.84542253949304,12.849509356090545];
+      const pilikula=[74.89579169558145,12.930226331113337];
+      const polali=[74.95532368182226,12.934330202811067 ];
+      const surathkal=[74.78927818182308,13.00969995296176];
+      const aloysius=[74.84523205113439,12.873955541492352];
+
+//Restaurants
+
+    const deepa=[74.84159144045292,12.878267653056225];
+    const shanthi=[74.86941188766772,13.044228470483784];
+    const balaji=[74.80501968169311,12.970125223695517];
+    const rathna=[74.83064124111634,12.92535748498806];
+    const bms=[74.8414558507474,12.904605299164908];
+    const sharadha=[74.86548832913134,12.9285224337338];
+    const roost=[74.90634345211808,12.937701039001364];
+    const vaibhav=[ 74.95530619459247,12.938643962608094];
+    const rachana=[74.79859797343258,13.0013159590796];
+    const goldfinch=[74.85121242731856,12.890018632732826];
+
+
+
+
+      // Initialize a map
+      const map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/mapbox/light-v10', // stylesheet location
+        center: mgrlocation, // starting position
+        zoom: 11.5 // starting zoom
+      });
+
+      const warehouse = turf.featureCollection([turf.point(startingpointlocation)]);
+
+      // Create an empty GeoJSON feature collection for drop off locations
+      const dropoffs = turf.featureCollection([]);
+
+      // Create an empty GeoJSON feature collection, which will be used as the data source for the route before users add any new data
+      const nothing = turf.featureCollection([]);
+
+      map.on('load', async () => {
+        const marker = document.createElement('div');
+        marker.classList = 'tourist';
+
+        // Create a new marker
+        new mapboxgl.Marker(marker).setLngLat(mgrlocation).addTo(map);
+
+        // Create a circle layer
+        map.addLayer({
+          id: 'warehouse',
+          type: 'circle',
+          source: {
+            data: warehouse,
+            type: 'geojson'
+          },
+          paint: {
+            'circle-radius': 20,
+            'circle-color': 'white',
+            'circle-stroke-color': '#3887be',
+            'circle-stroke-width': 3
+          }
+        });
+        
+
+    // create DOM element for the marker1
+    const el = document.createElement('div');
+    el.id = 'marker';
+
+    const popup1 = new mapboxgl.Popup({ offset: 25 }).setText('Kudroli Gokarnath Temple');
+    
+    // create the marker1
+    new mapboxgl.Marker(el)
+        .setLngLat(gokarnath)
+        .setPopup(popup1) // sets a popup on this marker
+        .addTo(map);
+    
+    // create DOM element for the marker2
+        const e2 = document.createElement('div');
+    e2.id = 'marker';
+    const popup2 = new mapboxgl.Popup({ offset: 25 }).setText('Kateel Shri Durgaparameshwari Temple');
+    
+    // create the marker2
+    new mapboxgl.Marker(e2)
+        .setLngLat(Kateel)
+        .setPopup(popup2) // sets a popup on this marker
+        .addTo(map);
+
+
+
+        // create DOM element for the marker3
+        const e3 = document.createElement('div');
+    e3.id = 'marker';
+    const popup3 = new mapboxgl.Popup({ offset: 25 }).setText('Panambur Beach');
+    
+    // create the marker3
+    new mapboxgl.Marker(e3)
+        .setLngLat(panambur)
+        .setPopup(popup3) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker4
+        const e4 = document.createElement('div');
+    e4.id = 'marker';
+    const popup4 = new mapboxgl.Popup({ offset: 25 }).setText('Tannirbhavi Beach');
+    
+    // create the marker4
+    new mapboxgl.Marker(e4)
+        .setLngLat(tannirbhavi)
+        .setPopup(popup4) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker5
+        const e5 = document.createElement('div');
+    e5.id = 'marker';
+    const popup5 = new mapboxgl.Popup({ offset: 25 }).setText('Kadri Manjunath Temple');
+    
+    // create the marker5
+    new mapboxgl.Marker(e5)
+        .setLngLat(manjunathtemple)
+        .setPopup(popup5) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker6
+        const e6 = document.createElement('div');
+    e6.id = 'marker';
+    const popup6 = new mapboxgl.Popup({ offset: 25 }).setText('Mangaladevi Temple');
+    
+    // create the marker6
+    new mapboxgl.Marker(e6)
+        .setLngLat(mangladevi)
+        .setPopup(popup6) // sets a popup on this marker
+        .addTo(map);
+ // create DOM element for the marker7
+ const e7 = document.createElement('div');
+    e7.id = 'marker';
+    const popup7 = new mapboxgl.Popup({ offset: 25 }).setText('Pilikula Nisargadhama');
+    
+    // create the marker7
+    new mapboxgl.Marker(e7)
+        .setLngLat(pilikula)
+        .setPopup(popup7) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker8
+        const e8 = document.createElement('div');
+    e8.id = 'marker';
+    const popup8 = new mapboxgl.Popup({ offset: 25 }).setText('Shree Kshethra Rajarajeshwari Temple');
+    
+    // create the marker8
+    new mapboxgl.Marker(e8)
+        .setLngLat(polali)
+        .setPopup(popup8) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker9
+        const e9 = document.createElement('div');
+    e9.id = 'marker';
+    const popup9 = new mapboxgl.Popup({ offset: 25 }).setText('Surathkal Beach');
+    
+    // create the marker9
+    new mapboxgl.Marker(e9)
+        .setLngLat(surathkal)
+        .setPopup(popup9) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker10
+        const e10 = document.createElement('div');
+    e10.id = 'marker';
+    const popup10 = new mapboxgl.Popup({ offset: 25 }).setText('Aloysius Chapel');
+    
+    // create the marker10
+    new mapboxgl.Marker(e10)
+        .setLngLat(aloysius)
+        .setPopup(popup10) // sets a popup on this marker
+        .addTo(map);
+
+//Restaurants
+ 
+ 
+ // create DOM element for the marker11
+ const e11 = document.createElement('div');
+    e11.id = 'marker9';
+
+    const popup11 = new mapboxgl.Popup({ offset: 25 }).setText('Hotel Deepa Comforts [Rating:4.2/5]');
+    
+    // create the marker11
+    new mapboxgl.Marker(e11)
+        .setLngLat(deepa)
+        .setPopup(popup11) // sets a popup on this marker
+        .addTo(map);
+    
+    // create DOM element for the marker12
+        const e12 = document.createElement('div');
+    e12.id = 'marker9';
+    const popup12 = new mapboxgl.Popup({ offset: 25 }).setText('Hotel Shanthi Sagar [Rating:4.2/5]');
+    
+    // create the marker12
+    new mapboxgl.Marker(e12)
+        .setLngLat(shanthi)
+        .setPopup(popup12) // sets a popup on this marker
+        .addTo(map);
+
+
+
+        // create DOM element for the marker13
+        const e13 = document.createElement('div');
+    e13.id = 'marker9';
+    const popup13 = new mapboxgl.Popup({ offset: 25 }).setText('Hotel Sri Balaji [Rating:4.0/5]');
+    
+    // create the marker13
+    new mapboxgl.Marker(e13)
+        .setLngLat(balaji)
+        .setPopup(popup13) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker14
+        const e14 = document.createElement('div');
+    e14.id = 'marker9';
+    const popup14 = new mapboxgl.Popup({ offset: 25 }).setText('Hotel Rathna Sharetan [Rating:4.3/5]');
+    
+    // create the marker14
+    new mapboxgl.Marker(e14)
+        .setLngLat(rathna)
+        .setPopup(popup14) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker15
+        const e15 = document.createElement('div');
+    e15.id = 'marker9';
+    const popup15 = new mapboxgl.Popup({ offset: 25 }).setText('Hotel BMS [Rating:4.5/5]');
+    
+    // create the marker15
+    new mapboxgl.Marker(e15)
+        .setLngLat(bms)
+        .setPopup(popup15) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marke16
+        const e16 = document.createElement('div');
+    e16.id = 'marker9';
+    const popup16 = new mapboxgl.Popup({ offset: 25 }).setText('Sharadha Residency [Rating:4.3/5]');
+    
+    // create the marker16
+    new mapboxgl.Marker(e16)
+        .setLngLat(sharadha)
+        .setPopup(popup16) // sets a popup on this marker
+        .addTo(map);
+
+ // create DOM element for the marker17
+ const e17 = document.createElement('div');
+    e17.id = 'marker9';
+    const popup17 = new mapboxgl.Popup({ offset: 25 }).setText('River Roost [Rating:4.2/5]');
+    
+    // create the marker17
+    new mapboxgl.Marker(e17)
+        .setLngLat(roost)
+        .setPopup(popup17) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker18
+        const e18 = document.createElement('div');
+    e18.id = 'marker9';
+    const popup18 = new mapboxgl.Popup({ offset: 25 }).setText('Hotel Shri Vaibhavalaxmi [Rating:3.8/5]');
+    
+    // create the marker18
+    new mapboxgl.Marker(e18)
+        .setLngLat(vaibhav)
+        .setPopup(popup18) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker19
+        const e19 = document.createElement('div');
+    e19.id = 'marker9';
+    const popup19 = new mapboxgl.Popup({ offset: 25 }).setText('RACHANA PALACE [Rating:4.0/5]');
+    
+    // create the marker19
+    new mapboxgl.Marker(e19)
+        .setLngLat(rachana)
+        .setPopup(popup19) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker20
+        const e20 = document.createElement('div');
+    e20.id = 'marker9';
+    const popup20 = new mapboxgl.Popup({ offset: 25 }).setText('Goldfinch Hotel [Rating:4.2/5]');
+    
+    // create the marker20
+    new mapboxgl.Marker(e20)
+        .setLngLat(goldfinch)
+        .setPopup(popup20) // sets a popup on this marker
+        .addTo(map);
+
+
+
+
+
+      
+        // Create a symbol layer on top of circle layer
+        map.addLayer({
+          id: 'startingpointlocation-symbol',
+          type: 'symbol',
+          source: {
+            data: warehouse,
+            type: 'geojson'
+          },
+          layout: {
+            'icon-image': 'tourist',
+            'icon-size': 1
+          },
+          paint: {
+            'text-color': '#3887be'
+          }
+        });
+
+        map.addLayer({
+          id: 'dropoffs-symbol',
+          type: 'symbol',
+          source: {
+            data: dropoffs,
+            type: 'geojson'
+          },
+          layout: {
+            'icon-allow-overlap': true,
+            'icon-ignore-placement': true,
+            'icon-image': 'marker-15'
+          }
+        });
+
+        map.addSource('route', {
+          type: 'geojson',
+          data: nothing
+        });
+
+        map.addLayer(
+          {
+            id: 'routeline-active',
+            type: 'line',
+            source: 'route',
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            paint: {
+              'line-color': '#3887be',
+              'line-width': ['interpolate', ['linear'], ['zoom'], 12, 3, 22, 12]
+            }
+          },
+          'waterway-label'
+        );
+
+        map.addLayer(
+          {
+            id: 'routearrows',
+            type: 'symbol',
+            source: 'route',
+            layout: {
+              'symbol-placement': 'line',
+              'text-field': '▶',
+              'text-size': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                12,
+                24,
+                22,
+                60
+              ],
+              'symbol-spacing': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                12,
+                30,
+                22,
+                160
+              ],
+              'text-keep-upright': false
+            },
+            paint: {
+              'text-color': '#3887be',
+              'text-halo-color': 'hsl(55, 11%, 96%)',
+              'text-halo-width': 3
+            }
+          },
+          'waterway-label'
+        );
+
+        // Listen for a click on the map
+        await map.on('click', addWaypoints);
+      });
+
+      async function addWaypoints(event) {
+        // When the map is clicked, add a new drop off point
+        // and update the `dropoffs-symbol` layer
+        await newDropoff(map.unproject(event.point));
+        updateDropoffs(dropoffs);
+      }
+
+      async function newDropoff(coordinates) {
+        // Store the clicked point as a new GeoJSON feature with
+        // two properties: `orderTime` and `key`
+        const pt = turf.point([coordinates.lng, coordinates.lat], {
+          orderTime: Date.now(),
+          key: Math.random()
+        });
+        dropoffs.features.push(pt);
+        pointHopper[pt.properties.key] = pt;
+
+        // Make a request to the Optimization API
+        const query = await fetch(assembleQueryURL(), { method: 'GET' });
+        const response = await query.json();
+
+        // Create an alert for any requests that return an error
+        if (response.code !== 'Ok') {
+          const handleMessage =
+            response.code === 'InvalidInput'
+              ? 'Refresh to start a new route. For more information: https://docs.mapbox.com/api/navigation/optimization/#optimization-api-errors'
+              : 'Try a different point.';
+          alert(`${response.code} - ${response.message}\n\n${handleMessage}`);
+          // Remove invalid point
+          dropoffs.features.pop();
+          delete pointHopper[pt.properties.key];
+          return;
+        }
+
+        // Create a GeoJSON feature collection
+        const routeGeoJSON = turf.featureCollection([
+          turf.feature(response.trips[0].geometry)
+        ]);
+
+        // Update the `route` source by getting the route source
+        // and setting the data equal to routeGeoJSON
+        map.getSource('route').setData(routeGeoJSON);
+      }
+
+      function updateDropoffs(geojson) {
+        map.getSource('dropoffs-symbol').setData(geojson);
+      }
+
+      // Here you'll specify all the parameters necessary for requesting a response from the Optimization API
+      function assembleQueryURL() {
+        // Store the location of the visitedplaces in a variable called coordinates
+        const coordinates = [mgrlocation];
+        const distributions = [];
+        let restaurantIndex;
+        keepTrack = [mgrlocation];
+
+        // Create an array of GeoJSON feature collections for each point
+        const restJobs = Object.keys(pointHopper).map(
+          (key) => pointHopper[key]
+        );
+
+        
+        if (restJobs.length > 0) {
+          
+          const needToPickUp =
+            restJobs.filter((d) => d.properties.orderTime > lastatplace)
+              .length > 0;
+
+         
+          if (needToPickUp) {
+            restaurantIndex = coordinates.length;
+            
+            coordinates.push(startingpointlocation);
+            
+            keepTrack.push(pointHopper.warehouse);
+          }
+
+          for (const job of restJobs) {
+            // Add dropoff to list
+            keepTrack.push(job);
+            coordinates.push(job.geometry.coordinates);
+            
+            if (needToPickUp && job.properties.orderTime > lastatplace) {
+              distributions.push(
+                `${restaurantIndex},${coordinates.length - 1}`
+              );
+            }
+          }
+        }
+
+        // Set the profile to `driving`
+        // Coordinates will include the current location of the touristperson,
+        return `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coordinates.join(
+          ';'
+        )}?distributions=${distributions.join(
+          ';'
+        )}&overview=full&steps=true&geometries=geojson&source=first&access_token=${
+          mapboxgl.accessToken
+        }`;
+      }
+    </script>
+  </body>
+</html>
+ 

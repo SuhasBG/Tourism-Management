@@ -10,10 +10,26 @@ const Maps = () => {
           <button onClick={() => (window.location.href = "mapOfMysuru.html")}>
             Map of Mysuru
           </button>
-          <button>Map of Bengaluruu</button>
-          <button>Map of Mangaluru</button>
-          <button>Map of Vijayapura</button>
-          <button>Map of Shivamogga</button>
+          <button
+            onClick={() => (window.location.href = "mapOfBengaluru.html")}
+          >
+            Map of Bengaluru
+          </button>
+          <button
+            onClick={() => (window.location.href = "mapOfMangaluru.html")}
+          >
+            Map of Mangaluru
+          </button>
+          <button
+            onClick={() => (window.location.href = "mapOfVijayapura.html")}
+          >
+            Map of Vijayapura
+          </button>
+          <button
+            onClick={() => (window.location.href = "mapOfShivamogga.html")}
+          >
+            Map of Shivamogga
+          </button>
         </div>
       </div>
     </div>

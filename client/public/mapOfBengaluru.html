@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Bengaluru</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+      }
+
+      .tourist {
+        width: 10px;
+        height: 10px;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        background: hsl(318, 100%, 49%);
+        pointer-events: none;
+      }
+    </style>
+    <style>
+
+      #marker {
+       background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM5hSj0drOJLCyMr4RvesGAxhxA41BTbDU9w&usqp=CAU');
+       background-size: cover;
+       width: 25px;
+       height: 25px;
+       border-radius: 100%;
+       cursor: pointer;
+   }
+   #marker9 {
+       background-image: url('https://st2.depositphotos.com/1010146/6261/v/950/depositphotos_62612237-stock-illustration-restaurant-map-pointer-icon.jpg');
+       background-size: cover;
+       width: 12px;
+       height: 15px;
+       border-radius: 50%;
+       cursor: pointer;
+   }
+
+.mapboxgl-popup {
+max-width: 400px;
+ font: 20px/30px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+   </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script>
+
+
+      const bglorelocation = [77.5713,12.9767];
+      const startingpointlocation = [77.5713,12.9767];
+      const lastatplace = 0;
+      let keepTrack = [];
+      const pointHopper = {};
+
+      // Add your access token
+      mapboxgl.accessToken = 'pk.eyJ1IjoibmlyYW5qYW5kaWtzaGl0aCIsImEiOiJja3h1NmV1cGQwdTY2Mm9vejg3aHJ3OWYxIn0.VBpdI2-ExteBZYntnwVz9A';
+
+
+//Places      
+      const palace= [ 77.59206418182293,12.999142331257339];
+      const lalbagh=[77.58465927997118,12.95101504483511];
+      const iskcon=[77.5511,13.0098];
+      const cubbon=[77.5929,12.9764];
+      const vidhana=[77.5912,12.9797];
+      const wonderla=[77.40108157017994,12.834931874908252];
+      const bannerghatta=[77.56880894815218,12.804669573629202];
+      const bulltemple=[77.56780663949414,12.942091179785695];
+      const ubcity=[77.59592596833033,12.971820526637062];
+      const nandi=[77.68029890968863,13.382211895135676 ];
+      const innovative=[ 77.41482053270867,12.779222919109257];
+
+//Restaurants
+ 
+    const imperial=[77.60081772014694,13.00513970719811];
+    const mtr=[77.58543924637605,12.960538842094278];
+    const higher=[77.55143916598313,13.009278221549296];
+    const mathsya=[77.59085396042087,12.979274421809372];
+    const soudha=[77.59033709636721,12.995332366499001];
+    const woods=[77.40194333068821,12.838289912617679];
+    const diletto=[77.57854992693017,12.801473937904536];
+    const bhavani=[77.56764767044271,12.943674981241506];
+    const prr =[77.41328176460017,12.782326062423111];
+    const shriakt=[77.68345305155783,13.370154628065183];
+    const sriracha=[77.59605769345302,12.971591846196]
+
+
+
+      // Initialize a map
+      const map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/mapbox/light-v10', // stylesheet location
+        center: bglorelocation, // starting position
+        zoom: 11.5// starting zoom
+      });
+
+      const warehouse = turf.featureCollection([turf.point(startingpointlocation)]);
+
+      // Create an empty GeoJSON feature collection for drop off locations
+      const dropoffs = turf.featureCollection([]);
+
+      // Create an empty GeoJSON feature collection, which will be used as the data source for the route before users add any new data
+      const nothing = turf.featureCollection([]);
+
+      map.on('load', async () => {
+        const marker = document.createElement('div');
+        marker.classList = 'tourist';
+
+        // Create a new marker
+        new mapboxgl.Marker(marker).setLngLat(bglorelocation).addTo(map);
+
+        // Create a circle layer
+        map.addLayer({
+          id: 'warehouse',
+          type: 'circle',
+          source: {
+            data: warehouse,
+            type: 'geojson'
+          },
+          paint: {
+            'circle-radius': 20,
+            'circle-color': 'white',
+            'circle-stroke-color': '#3887be',
+            'circle-stroke-width': 3
+          }
+        });
+        
+
+    // create DOM element for the marker1
+    const el = document.createElement('div');
+    el.id = 'marker';
+
+    const popup1 = new mapboxgl.Popup({ offset: 25 }).setText('Bangalore Palace');
+    
+    // create the marker1
+    new mapboxgl.Marker(el)
+        .setLngLat(palace)
+        .setPopup(popup1) // sets a popup on this marker
+        .addTo(map);
+    
+    // create DOM element for the marker2
+        const e2 = document.createElement('div');
+    e2.id = 'marker';
+    const popup2 = new mapboxgl.Popup({ offset: 25 }).setText('Lalbagh Botanical Garden');
+    
+    // create the marker2
+    new mapboxgl.Marker(e2)
+        .setLngLat(lalbagh)
+        .setPopup(popup2) // sets a popup on this marker
+        .addTo(map);
+
+
+
+        // create DOM element for the marker3
+        const e3 = document.createElement('div');
+    e3.id = 'marker';
+    const popup3 = new mapboxgl.Popup({ offset: 25 }).setText('ISKCON Temple');
+    
+    // create the marker3
+    new mapboxgl.Marker(e3)
+        .setLngLat(iskcon)
+        .setPopup(popup3) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker4
+        const e4 = document.createElement('div');
+    e4.id = 'marker';
+    const popup4 = new mapboxgl.Popup({ offset: 25 }).setText('Cubbon Park');
+    
+    // create the marker4
+    new mapboxgl.Marker(e4)
+        .setLngLat(cubbon)
+        .setPopup(popup4) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker5
+        const e5 = document.createElement('div');
+    e5.id = 'marker';
+    const popup5 = new mapboxgl.Popup({ offset: 25 }).setText('Vidhana Soudha');
+    
+    // create the marker5
+    new mapboxgl.Marker(e5)
+        .setLngLat(vidhana)
+        .setPopup(popup5) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker6
+        const e6 = document.createElement('div');
+    e6.id = 'marker';
+    const popup6 = new mapboxgl.Popup({ offset: 25 }).setText('Wonderla Amusement Park');
+    
+    // create the marker6
+    new mapboxgl.Marker(e6)
+        .setLngLat(wonderla)
+        .setPopup(popup6) // sets a popup on this marker
+        .addTo(map);
+ // create DOM element for the marker7
+ const e7 = document.createElement('div');
+    e7.id = 'marker';
+    const popup7 = new mapboxgl.Popup({ offset: 25 }).setText('Bannerghatta National Park');
+    
+    // create the marker7
+    new mapboxgl.Marker(e7)
+        .setLngLat(bannerghatta)
+        .setPopup(popup7) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker8
+        const e8 = document.createElement('div');
+    e8.id = 'marker';
+    const popup8 = new mapboxgl.Popup({ offset: 25 }).setText('Bull Temple');
+    
+    // create the marker8
+    new mapboxgl.Marker(e8)
+        .setLngLat(bulltemple)
+        .setPopup(popup8) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker9
+        const e9 = document.createElement('div');
+    e9.id = 'marker';
+    const popup9 = new mapboxgl.Popup({ offset: 25 }).setText('Innovative Film City');
+    
+    // create the marker9
+    new mapboxgl.Marker(e9)
+        .setLngLat(innovative)
+        .setPopup(popup9) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker10
+        const e10 = document.createElement('div');
+    e10.id = 'marker';
+    const popup10 = new mapboxgl.Popup({ offset: 25 }).setText('Nandi Hills');
+    
+    // create the marker10
+    new mapboxgl.Marker(e10)
+        .setLngLat(nandi)
+        .setPopup(popup10) // sets a popup on this marker
+        .addTo(map);
+
+
+  // create DOM element for the marker22
+ const e22 = document.createElement('div');
+    e22.id = 'marker';
+    const popup22 = new mapboxgl.Popup({ offset: 25 }).setText('UB City');
+    
+    // create the marker22
+    new mapboxgl.Marker(e22)
+        .setLngLat(ubcity)
+        .setPopup(popup22) // sets a popup on this marker
+        .addTo(map);
+
+
+//Restaurants
+ 
+ 
+ // create DOM element for the marker11
+ const e11 = document.createElement('div');
+    e11.id = 'marker9';
+
+    const popup11 = new mapboxgl.Popup({ offset: 25 }).setText('IMPERIAL RESTAURANT [Rating:3.9/5]');
+    
+    // create the marker11
+    new mapboxgl.Marker(e11)
+        .setLngLat(imperial)
+        .setPopup(popup11) // sets a popup on this marker
+        .addTo(map);
+    
+    // create DOM element for the marker12
+        const e12 = document.createElement('div');
+    e12.id = 'marker9';
+    const popup12 = new mapboxgl.Popup({ offset: 25 }).setText('MTR HOTEL [Rating:4.3/5]');
+    
+    // create the marker12
+    new mapboxgl.Marker(e12)
+        .setLngLat(mtr)
+        .setPopup(popup12) // sets a popup on this marker
+        .addTo(map);
+
+
+
+        // create DOM element for the marker13
+        const e13 = document.createElement('div');
+    e13.id = 'marker9';
+    const popup13 = new mapboxgl.Popup({ offset: 25 }).setText('The higher taste [Rating:4.4/5]');
+    
+    // create the marker13
+    new mapboxgl.Marker(e13)
+        .setLngLat(higher)        
+        .setPopup(popup13) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker14
+        const e14 = document.createElement('div');
+    e14.id = 'marker9';
+    const popup14 = new mapboxgl.Popup({ offset: 25 }).setText('Mathsya darshini [Rating:3.9/5]');
+    
+    // create the marker14
+    new mapboxgl.Marker(e14)
+        .setLngLat(mathsya)
+        .setPopup(popup14) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker15
+        const e15 = document.createElement('div');
+    e15.id = 'marker9';
+    const popup15 = new mapboxgl.Popup({ offset: 25 }).setText('Vidhana soudha canteen [Rating:4.0/5]');
+    
+    // create the marker15
+    new mapboxgl.Marker(e15)
+        .setLngLat(soudha)
+        .setPopup(popup15) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marke16
+        const e16 = document.createElement('div');
+    e16.id = 'marker9';
+    const popup16 = new mapboxgl.Popup({ offset: 25 }).setText('Woods restaurant [Rating:3.9/5]');
+    
+    // create the marker16
+    new mapboxgl.Marker(e16)
+        .setLngLat(woods)
+        .setPopup(popup16) // sets a popup on this marker
+        .addTo(map);
+
+ // create DOM element for the marker17
+ const e17 = document.createElement('div');
+    e17.id = 'marker9';
+    const popup17 = new mapboxgl.Popup({ offset: 25 }).setText('DILETTO [Rating:3.6/5]');
+    
+    // create the marker17
+    new mapboxgl.Marker(e17)
+        .setLngLat(diletto)
+        .setPopup(popup17) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker18
+        const e18 = document.createElement('div');
+    e18.id = 'marker9';
+    const popup18 = new mapboxgl.Popup({ offset: 25 }).setText('Bhavani Restaurant [Rating:4.2/5]');
+    
+    // create the marker18
+    new mapboxgl.Marker(e18)
+        .setLngLat(bhavani)
+        .setPopup(popup18) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker19
+        const e19 = document.createElement('div');
+    e19.id = 'marker9';
+    const popup19 = new mapboxgl.Popup({ offset: 25 }).setText('PRR KITCHEN [Rating:4.0/5]');
+    
+    // create the marker19
+    new mapboxgl.Marker(e19)
+        .setLngLat(prr)
+        .setPopup(popup19) // sets a popup on this marker
+        .addTo(map);
+
+
+        // create DOM element for the marker20
+        const e20 = document.createElement('div');
+    e20.id = 'marker9';
+    const popup20 = new mapboxgl.Popup({ offset: 25 }).setText('Shriakt [Rating:3.7/5]');
+    
+    // create the marker20
+    new mapboxgl.Marker(e20)
+        .setLngLat(shriakt)
+        .setPopup(popup20) // sets a popup on this marker
+        .addTo(map);
+
+// create DOM element for the marker21
+const e21 = document.createElement('div');
+    e21.id = 'marker9';
+    const popup21 = new mapboxgl.Popup({ offset: 25 }).setText('Sriracha [Rating:4.3/5]');
+    
+    // create the marker21
+    new mapboxgl.Marker(e21)
+        .setLngLat(sriracha)
+        .setPopup(popup21) // sets a popup on this marker
+        .addTo(map);
+
+
+
+
+
+ 
+
+      
+        // Create a symbol layer on top of circle layer
+        map.addLayer({
+          id: 'startingpointlocation-symbol',
+          type: 'symbol',
+          source: {
+            data: warehouse,
+            type: 'geojson'
+          },
+          layout: {
+            'icon-image': 'tourist',
+            'icon-size': 1
+          },
+          paint: {
+            'text-color': '#3887be'
+          }
+        });
+
+        map.addLayer({
+          id: 'dropoffs-symbol',
+          type: 'symbol',
+          source: {
+            data: dropoffs,
+            type: 'geojson'
+          },
+          layout: {
+            'icon-allow-overlap': true,
+            'icon-ignore-placement': true,
+            'icon-image': 'marker-15'
+          }
+        });
+
+        map.addSource('route', {
+          type: 'geojson',
+          data: nothing
+        });
+
+        map.addLayer(
+          {
+            id: 'routeline-active',
+            type: 'line',
+            source: 'route',
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            paint: {
+              'line-color': '#3887be',
+              'line-width': ['interpolate', ['linear'], ['zoom'], 12, 3, 22, 12]
+            }
+          },
+          'waterway-label'
+        );
+
+        map.addLayer(
+          {
+            id: 'routearrows',
+            type: 'symbol',
+            source: 'route',
+            layout: {
+              'symbol-placement': 'line',
+              'text-field': '▶',
+              'text-size': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                12,
+                24,
+                22,
+                60
+              ],
+              'symbol-spacing': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                12,
+                30,
+                22,
+                160
+              ],
+              'text-keep-upright': false
+            },
+            paint: {
+              'text-color': '#3887be',
+              'text-halo-color': 'hsl(55, 11%, 96%)',
+              'text-halo-width': 3
+            }
+          },
+          'waterway-label'
+        );
+
+        // Listen for a click on the map
+        await map.on('click', addWaypoints);
+      });
+
+      async function addWaypoints(event) {
+        // When the map is clicked, add a new drop off point
+        // and update the `dropoffs-symbol` layer
+        await newDropoff(map.unproject(event.point));
+        updateDropoffs(dropoffs);
+      }
+
+      async function newDropoff(coordinates) {
+        // Store the clicked point as a new GeoJSON feature with
+        // two properties: `orderTime` and `key`
+        const pt = turf.point([coordinates.lng, coordinates.lat], {
+          orderTime: Date.now(),
+          key: Math.random()
+        });
+        dropoffs.features.push(pt);
+        pointHopper[pt.properties.key] = pt;
+
+        // Make a request to the Optimization API
+        const query = await fetch(assembleQueryURL(), { method: 'GET' });
+        const response = await query.json();
+
+        // Create an alert for any requests that return an error
+        if (response.code !== 'Ok') {
+          const handleMessage =
+            response.code === 'InvalidInput'
+              ? 'Refresh to start a new route. For more information: https://docs.mapbox.com/api/navigation/optimization/#optimization-api-errors'
+              : 'Try a different point.';
+          alert(`${response.code} - ${response.message}\n\n${handleMessage}`);
+          // Remove invalid point
+          dropoffs.features.pop();
+          delete pointHopper[pt.properties.key];
+          return;
+        }
+
+        // Create a GeoJSON feature collection
+        const routeGeoJSON = turf.featureCollection([
+          turf.feature(response.trips[0].geometry)
+        ]);
+
+        // Update the `route` source by getting the route source
+        // and setting the data equal to routeGeoJSON
+        map.getSource('route').setData(routeGeoJSON);
+      }
+
+      function updateDropoffs(geojson) {
+        map.getSource('dropoffs-symbol').setData(geojson);
+      }
+
+      // Here you'll specify all the parameters necessary for requesting a response from the Optimization API
+      function assembleQueryURL() {
+        // Store the location of the visitedplaces in a variable called coordinates
+        const coordinates = [bglorelocation];
+        const distributions = [];
+        let restaurantIndex;
+        keepTrack = [bglorelocation];
+
+        // Create an array of GeoJSON feature collections for each point
+        const restJobs = Object.keys(pointHopper).map(
+          (key) => pointHopper[key]
+        );
+
+        
+        if (restJobs.length > 0) {
+          
+          const needToPickUp =
+            restJobs.filter((d) => d.properties.orderTime > lastatplace)
+              .length > 0;
+
+         
+          if (needToPickUp) {
+            restaurantIndex = coordinates.length;
+            
+            coordinates.push(startingpointlocation);
+            
+            keepTrack.push(pointHopper.warehouse);
+          }
+
+          for (const job of restJobs) {
+            // Add dropoff to list
+            keepTrack.push(job);
+            coordinates.push(job.geometry.coordinates);
+            
+            if (needToPickUp && job.properties.orderTime > lastatplace) {
+              distributions.push(
+                `${restaurantIndex},${coordinates.length - 1}`
+              );
+            }
+          }
+        }
+
+        // Set the profile to `driving`
+        // Coordinates will include the current location of the touristperson,
+        return `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coordinates.join(
+          ';'
+        )}?distributions=${distributions.join(
+          ';'
+        )}&overview=full&steps=true&geometries=geojson&source=first&access_token=${
+          mapboxgl.accessToken
+        }`;
+      }
+    </script>
+  </body>
+</html>
+ 
