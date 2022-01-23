@@ -14,9 +14,17 @@ function Places() {
     );
   }
   return (
-    <div className="container">
+    <div style={{ 
+      backgroundImage: `url("https://www.nobroker.in/blog/wp-content/uploads/2021/11/Karnataka-Land-Records.jpg")`,
+      backgroundSize: 'cover', 
+      backgroundPosition: 'center center',
+      backgroundRepeat: 'no-repeat',
+      paddingTop: '250px',
+      paddingBottom: '261px'  
+    }}>
+      <div className="container">
       <div className="py-4">
-        <h1>Click here to get the list of places</h1>
+        <h1 style={{paddingBottom: '15px'}}>Click here to get the list of places</h1>
         <div>
           <button onClick={getPlaces}>Places</button>
         </div>
@@ -31,7 +39,9 @@ function Places() {
           </div>
         ))}
       </div>
+      </div>
     </div>
+    
   );
 }
 

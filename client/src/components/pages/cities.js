@@ -14,9 +14,17 @@ function Cities() {
     );
   }
   return (
-    <div className="container">
+    <div style={{ 
+      backgroundImage: `url("http://www.esri.com/~/media/Images/Content/news/releases/17-3qtr/esri-cityengine-2017-makes-urban-planning-more-efficient-lg.gif")`,
+      backgroundSize: 'cover', 
+      backgroundPosition: 'center center',
+      backgroundRepeat: 'no-repeat',
+      paddingTop: '250px',
+      paddingBottom: '261px'  
+    }}>
+      <div className="container">
       <div className="py-4">
-        <h1>Click here to get the list of cities</h1>
+        <h1 style={{color: 'white', marginBottom: '15px', padding: '15px 0', background: 'black'}}>Click here to get the list of cities</h1>
         <div className="container">
           <button onClick={getCities}>Cities</button>
         </div>
@@ -35,7 +43,9 @@ function Cities() {
         {/* </tr>
         </table> */}
       </div>
+      </div>
     </div>
+    
   );
 }
 

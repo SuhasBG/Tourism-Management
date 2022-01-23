@@ -14,9 +14,17 @@ function Restaurants() {
     );
   }
   return (
-    <div className="container">
+    <div style={{ 
+      backgroundImage: `url("https://www.tripsavvy.com/thmb/oOZHSZWDwEGuY-yh3J9Ah-h7O98=/960x640/filters:no_upscale():max_bytes(150000):strip_icc()/36961551_464494194020966_3634414764827869184_n-5b53e86346e0fb005bed59d5.jpg")`,
+      backgroundSize: 'cover', 
+      backgroundPosition: 'center center',
+      backgroundRepeat: 'no-repeat',
+      paddingTop: '250px',
+      paddingBottom: '285px'  
+    }}>
+      <div className="container">
       <div className="py-4">
-        <h1>Click here to get the list of restaurants</h1>
+        <h1 style={{color: 'white', paddingBottom: '15px'}}>Click here to get the list of restaurants</h1>
         <div>
           <button onClick={getRestaurants}>Restaurants</button>
         </div>
@@ -28,6 +36,7 @@ function Restaurants() {
             <h6>Rating : {item.rating}</h6>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

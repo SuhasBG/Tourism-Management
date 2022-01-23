@@ -3,4 +3,7 @@ button {
   justify-content: center;
   columns: 1;
   row-gap: 1;
+  font-size: larger;
+  margin: 0 16px;
+  border-radius: 15px;
 }
