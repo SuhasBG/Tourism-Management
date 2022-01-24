@@ -16,7 +16,7 @@ if (port == null || port == "") {
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Suhasbg@2001",
+  password: "***********",
   database: "tourism",
 });
 
