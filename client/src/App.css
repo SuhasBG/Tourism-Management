@@ -34,6 +34,7 @@ button:hover {
   padding: 10px;
   justify-content: center;
   font-family: "Courier New", Courier, monospace;
+  border-radius: 25px;
 }
 
 .city h6 {
@@ -49,6 +50,7 @@ button:hover {
   padding: 10px;
   justify-content: center;
   font-family: "Courier New", Courier, monospace;
+  border-radius: 25px;
 }
 
 .place h6 {
@@ -64,6 +66,7 @@ button:hover {
   padding: 10px;
   justify-content: center;
   font-family: "Courier New", Courier, monospace;
+  border-radius: 25px;
 }
 
 .restaurant h6 {

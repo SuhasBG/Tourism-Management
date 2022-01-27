@@ -14,38 +14,48 @@ function Cities() {
     );
   }
   return (
-    <div style={{ 
-      backgroundImage: `url("http://www.esri.com/~/media/Images/Content/news/releases/17-3qtr/esri-cityengine-2017-makes-urban-planning-more-efficient-lg.gif")`,
-      backgroundSize: 'cover', 
-      backgroundPosition: 'center center',
-      backgroundRepeat: 'no-repeat',
-      paddingTop: '250px',
-      paddingBottom: '261px'  
-    }}>
+    <div
+      style={{
+        backgroundImage: `url("http://www.esri.com/~/media/Images/Content/news/releases/17-3qtr/esri-cityengine-2017-makes-urban-planning-more-efficient-lg.gif")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center center",
+        backgroundRepeat: "no-repeat",
+        paddingTop: "250px",
+        paddingBottom: "261px",
+      }}
+    >
       <div className="container">
-      <div className="py-4">
-        <h1 style={{color: 'white', marginBottom: '15px', padding: '15px 0', background: 'black'}}>Click here to get the list of cities</h1>
-        <div className="container">
-          <button onClick={getCities}>Cities</button>
-        </div>
-        {/* <table class="center">
-          <tr>
-            <th>City Id</th>
-            <th>City Name</th>
-          </tr>
-          <tr> */}
-        {citiesList.map((item, index) => (
-          <div className="city">
-            <h6>{item.cid}</h6>
-            <h6>{item.cname}</h6>
+        <div className="py-4" style={{display: "flex", flexDirection:"column", justifyContent:"center",alignItems:"center",alignContent:"center"}}>
+          <h1
+            style={{
+              color: "white",
+              marginBottom: "15px",
+              padding: "15px 0",
+              background: "black",
+            }}
+          >
+            Click here to get the list of cities
+          </h1>
+          <div className="container">
+            <button onClick={getCities}>Cities</button>
           </div>
-        ))}
-        {/* </tr>
-        </table> */}
-      </div>
+
+          {citiesList.map((item, index) => (
+            <div
+              className="city"
+              style={{
+                background: "white",
+                alignContent: "center",
+                paddingLeft: "50px",
+              }}
+            >
+              <h6>{item.cid}</h6>
+              <h6>{item.cname}</h6>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-    
   );
 }
 
