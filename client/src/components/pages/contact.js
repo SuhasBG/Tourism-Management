@@ -13,10 +13,10 @@ const Contact = () => {
     >
       <div className Name="container">
         <h1 style={{ color: "black", marginBottom: 0 }}>
-          Devothama GN : devothamgn321@gmail.com
+          Sreelal Raj M K: sreelalrajmk@gmail.com
         </h1>
         <h1 style={{ color: "black", marginBottom: 0 }}>
-          Dheemanth R: dheemanth24@gmail.com
+          Srinivas Reddy P : srinivasreddy0624@gmail.com
         </h1>
         
         <h1 style={{ color: "black", marginTop: 0 }}></h1>
