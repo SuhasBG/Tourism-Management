@@ -2,8 +2,6 @@ const express = require("express");
 const res = require("express/lib/response");
 const mysql = require("mysql");
 const app = express();
-// var cors = require("cors");
-// res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 var cors = require("cors");
 
 app.use(cors());
@@ -55,7 +53,6 @@ app.get("/restaurants", (req, res) => {
   });
 });
 
-// app.use(cors());
-app.listen("3000", () => {
-  console.log("Server started on port 3000");
+app.listen("5000", () => {
+  console.log("Server started on port 5000");
 });
